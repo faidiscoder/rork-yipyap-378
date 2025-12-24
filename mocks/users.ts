@@ -1,22 +1,33 @@
 import { User } from '@/types/user';
 
+const isoNow = () => new Date().toISOString();
+
+const makeUser = (u: Omit<User, 'createdAt'> & { createdAt?: string }): User => {
+  return {
+    ...u,
+    createdAt: u.createdAt ?? isoNow(),
+  };
+};
+
 export const mockUsers: User[] = [
-  {
+  makeUser({
     id: 'user1',
     name: 'Alex Johnson',
     displayName: 'Alex',
     username: 'alexj',
     email: 'alex@example.com',
-    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
+    avatar:
+      'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
     bio: 'Just a regular person trying to make friends.',
     age: 22,
     gender: 'male',
+    pronouns: 'he/him',
     highSchool: 'Palo Alto High',
     relationshipStatus: 'single',
     interests: ['Music', 'Sports', 'Movies'],
     isVerified: true,
     isOnline: true,
-    lastActive: new Date().toISOString(),
+    lastActive: isoNow(),
     streakCount: 5,
     yipScore: 1200,
     mutualFriends: 3,
@@ -25,31 +36,22 @@ export const mockUsers: User[] = [
     zodiacSign: 'Aries',
     photos: [
       'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-      'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80'
+      'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
     ],
-    photosCaptions: [
-      'Just hanging out',
-      'Beach day'
-    ],
-    stories: [
-      {
-        id: 'story1',
-        url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-        timestamp: Date.now() - 3600000,
-        caption: 'Having a great day!'
-      }
-    ]
-  },
-  {
+    photosCaptions: ['Just hanging out', 'Beach day'],
+  }),
+  makeUser({
     id: 'user2',
     name: 'Taylor Smith',
     displayName: 'Taylor',
     username: 'taylors',
     email: 'taylor@example.com',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
+    avatar:
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
     bio: 'Living life one day at a time. Love hiking and photography.',
     age: 24,
     gender: 'female',
+    pronouns: 'she/her',
     highSchool: 'Gunn High School',
     relationshipStatus: 'taken',
     interests: ['Photography', 'Hiking', 'Travel'],
@@ -65,69 +67,47 @@ export const mockUsers: User[] = [
     photos: [
       'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
       'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-      'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80'
+      'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
     ],
-    photosCaptions: [
-      'Coffee time',
-      'Hiking trip',
-      'Beach sunset'
-    ],
-    stories: [
-      {
-        id: 'story2',
-        url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-        timestamp: Date.now() - 7200000,
-        caption: 'Coffee and coding'
-      },
-      {
-        id: 'story3',
-        url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-        timestamp: Date.now() - 3600000,
-        caption: 'Weekend vibes'
-      }
-    ]
-  },
-  {
+    photosCaptions: ['Coffee time', 'Hiking trip', 'Beach sunset'],
+  }),
+  makeUser({
     id: 'user3',
     name: 'Jordan Lee',
     displayName: 'Jordan',
     username: 'jordanl',
     email: 'jordan@example.com',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
+    avatar:
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
     bio: 'Music lover and coffee addict.',
     age: 21,
     gender: 'male',
+    pronouns: 'he/him',
     highSchool: 'Menlo-Atherton High',
     relationshipStatus: 'complicated',
     interests: ['Music', 'Coffee', 'Art'],
     isVerified: false,
     isOnline: true,
-    lastActive: new Date().toISOString(),
+    lastActive: isoNow(),
     streakCount: 3,
     yipScore: 800,
     mutualFriends: 2,
     distance: 2.5,
     birthday: 'October 10',
     zodiacSign: 'Libra',
-    stories: [
-      {
-        id: 'story4',
-        url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-        timestamp: Date.now() - 10800000,
-        caption: 'Music session'
-      }
-    ]
-  },
-  {
+  }),
+  makeUser({
     id: 'user4',
     name: 'Casey Brown',
     displayName: 'Casey',
     username: 'caseyb',
     email: 'casey@example.com',
-    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
+    avatar:
+      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
     bio: 'Tech enthusiast and gamer.',
     age: 23,
     gender: 'female',
+    pronouns: 'she/her',
     highSchool: 'Woodside High',
     relationshipStatus: 'single',
     interests: ['Gaming', 'Technology', 'Anime'],
@@ -140,31 +120,25 @@ export const mockUsers: User[] = [
     distance: 3.1,
     birthday: 'January 30',
     zodiacSign: 'Aquarius',
-    stories: [
-      {
-        id: 'story5',
-        url: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-        timestamp: Date.now() - 14400000,
-        caption: 'Gaming night'
-      }
-    ]
-  },
-  {
+  }),
+  makeUser({
     id: 'user5',
     name: 'Riley Garcia',
     displayName: 'Riley',
     username: 'rileyg',
     email: 'riley@example.com',
-    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
+    avatar:
+      'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
     bio: 'Foodie and fitness enthusiast.',
     age: 25,
     gender: 'female',
+    pronouns: 'she/her',
     highSchool: 'Los Altos High',
     relationshipStatus: 'taken',
     interests: ['Cooking', 'Fitness', 'Travel'],
     isVerified: true,
     isOnline: true,
-    lastActive: new Date().toISOString(),
+    lastActive: isoNow(),
     streakCount: 15,
     yipScore: 3000,
     mutualFriends: 7,
@@ -172,31 +146,19 @@ export const mockUsers: User[] = [
     birthday: 'July 12',
     zodiacSign: 'Cancer',
     isVIP: true,
-    stories: [
-      {
-        id: 'story6',
-        url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-        timestamp: Date.now() - 5400000,
-        caption: 'Workout complete!'
-      },
-      {
-        id: 'story7',
-        url: 'https://images.unsplash.com/photo-1532980400857-e8d9d275d858?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-        timestamp: Date.now() - 3600000,
-        caption: 'Meal prep Sunday'
-      }
-    ]
-  },
-  {
+  }),
+  makeUser({
     id: 'user6',
     name: 'Morgan Wilson',
     displayName: 'Morgan',
     username: 'morganw',
     email: 'morgan@example.com',
-    avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
+    avatar:
+      'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
     bio: 'Book lover and aspiring writer.',
     age: 22,
     gender: 'male',
+    pronouns: 'he/him',
     highSchool: 'Mountain View High',
     relationshipStatus: 'single',
     interests: ['Reading', 'Writing', 'Poetry'],
@@ -209,62 +171,44 @@ export const mockUsers: User[] = [
     distance: 4.2,
     birthday: 'March 5',
     zodiacSign: 'Pisces',
-    stories: [
-      {
-        id: 'story8',
-        url: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-        timestamp: Date.now() - 18000000,
-        caption: 'Reading my favorite book'
-      }
-    ]
-  },
-  {
+  }),
+  makeUser({
     id: 'user7',
     name: 'Avery Martinez',
     displayName: 'Avery',
     username: 'averym',
     email: 'avery@example.com',
-    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
+    avatar:
+      'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
     bio: 'Music producer and DJ.',
     age: 24,
     gender: 'female',
+    pronouns: 'she/her',
     highSchool: 'Palo Alto High',
     relationshipStatus: 'complicated',
     interests: ['Music Production', 'DJing', 'Concerts'],
     isVerified: true,
     isOnline: true,
-    lastActive: new Date().toISOString(),
+    lastActive: isoNow(),
     streakCount: 10,
     yipScore: 2200,
     mutualFriends: 6,
     distance: 0.8,
     birthday: 'September 18',
     zodiacSign: 'Virgo',
-    stories: [
-      {
-        id: 'story9',
-        url: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-        timestamp: Date.now() - 7200000,
-        caption: 'New track dropping soon'
-      },
-      {
-        id: 'story10',
-        url: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-        timestamp: Date.now() - 3600000,
-        caption: 'Studio session'
-      }
-    ]
-  },
-  {
+  }),
+  makeUser({
     id: 'user8',
     name: 'Quinn Thompson',
     displayName: 'Quinn',
     username: 'quinnt',
     email: 'quinn@example.com',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
+    avatar:
+      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
     bio: 'Environmental activist and nature lover.',
     age: 23,
     gender: 'male',
+    pronouns: 'he/him',
     highSchool: 'Gunn High School',
     relationshipStatus: 'single',
     interests: ['Environment', 'Hiking', 'Photography'],
@@ -277,31 +221,25 @@ export const mockUsers: User[] = [
     distance: 2.0,
     birthday: 'June 8',
     zodiacSign: 'Gemini',
-    stories: [
-      {
-        id: 'story11',
-        url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-        timestamp: Date.now() - 21600000,
-        caption: 'Beach cleanup day'
-      }
-    ]
-  },
-  {
+  }),
+  makeUser({
     id: 'user9',
     name: 'Jamie Rodriguez',
     displayName: 'Jamie',
     username: 'jamier',
     email: 'jamie@example.com',
-    avatar: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
+    avatar:
+      'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
     bio: 'Sports enthusiast and coach.',
     age: 25,
     gender: 'female',
+    pronouns: 'she/her',
     highSchool: 'Menlo-Atherton High',
     relationshipStatus: 'taken',
     interests: ['Sports', 'Coaching', 'Fitness'],
     isVerified: false,
     isOnline: true,
-    lastActive: new Date().toISOString(),
+    lastActive: isoNow(),
     streakCount: 20,
     yipScore: 3500,
     mutualFriends: 8,
@@ -309,37 +247,19 @@ export const mockUsers: User[] = [
     birthday: 'November 22',
     zodiacSign: 'Sagittarius',
     isVIP: true,
-    stories: [
-      {
-        id: 'story12',
-        url: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-        timestamp: Date.now() - 10800000,
-        caption: 'Game day!'
-      },
-      {
-        id: 'story13',
-        url: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-        timestamp: Date.now() - 7200000,
-        caption: 'Training session'
-      },
-      {
-        id: 'story14',
-        url: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-        timestamp: Date.now() - 3600000,
-        caption: 'Workout complete'
-      }
-    ]
-  },
-  {
+  }),
+  makeUser({
     id: 'user10',
     name: 'Reese Campbell',
     displayName: 'Reese',
     username: 'reesec',
     email: 'reese@example.com',
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
+    avatar:
+      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
     bio: 'Fashion designer and artist.',
     age: 22,
     gender: 'male',
+    pronouns: 'he/him',
     highSchool: 'Woodside High',
     relationshipStatus: 'single',
     interests: ['Fashion', 'Art', 'Design'],
@@ -352,53 +272,273 @@ export const mockUsers: User[] = [
     distance: 3.5,
     birthday: 'February 14',
     zodiacSign: 'Aquarius',
-    stories: [
-      {
-        id: 'story15',
-        url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80',
-        timestamp: Date.now() - 25200000,
-        caption: 'New design in progress'
-      }
-    ]
-  }
+  }),
+  makeUser({
+    id: 'user11',
+    name: 'Sam Patel',
+    displayName: 'Sam',
+    username: 'samp',
+    email: 'sam@example.com',
+    avatar:
+      'https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    bio: 'Startup intern. Obsessed with espresso and product design.',
+    age: 20,
+    gender: 'male',
+    pronouns: 'he/him',
+    highSchool: 'Palo Alto High',
+    relationshipStatus: 'single',
+    interests: ['Design', 'Startups', 'Coffee'],
+    yipScore: 910,
+    zodiacSign: 'Taurus',
+    isOnline: true,
+    lastActive: isoNow(),
+    streakCount: 6,
+    mutualFriends: 1,
+    distance: 0.9,
+  }),
+  makeUser({
+    id: 'user12',
+    name: 'Nina Kim',
+    displayName: 'Nina',
+    username: 'ninak',
+    email: 'nina@example.com',
+    avatar:
+      'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    bio: 'Film camera, thrift finds, and late-night ramen runs.',
+    age: 23,
+    gender: 'female',
+    pronouns: 'she/her',
+    highSchool: 'Mountain View High',
+    relationshipStatus: 'single',
+    interests: ['Photography', 'Vintage', 'Food'],
+    yipScore: 2100,
+    zodiacSign: 'Leo',
+    isOnline: false,
+    lastActive: new Date(Date.now() - 5400000).toISOString(),
+    streakCount: 9,
+    mutualFriends: 4,
+    distance: 2.7,
+  }),
+  makeUser({
+    id: 'user13',
+    name: 'Diego Alvarez',
+    displayName: 'Diego',
+    username: 'dieg0',
+    email: 'diego@example.com',
+    avatar:
+      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    bio: 'Pickup soccer, street tacos, and playlists for every mood.',
+    age: 24,
+    gender: 'male',
+    pronouns: 'he/him',
+    highSchool: 'Menlo-Atherton High',
+    relationshipStatus: 'single',
+    interests: ['Soccer', 'Food', 'Music'],
+    yipScore: 1650,
+    zodiacSign: 'Scorpio',
+    isOnline: true,
+    lastActive: isoNow(),
+    streakCount: 11,
+    mutualFriends: 2,
+    distance: 1.1,
+  }),
+  makeUser({
+    id: 'user14',
+    name: 'Harper Nguyen',
+    displayName: 'Harper',
+    username: 'harpern',
+    email: 'harper@example.com',
+    avatar:
+      'https://images.unsplash.com/photo-1524503033411-fd26f86d5f7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    bio: 'Climbing gym regular. Always down for a weekend road trip.',
+    age: 22,
+    gender: 'female',
+    pronouns: 'she/her',
+    highSchool: 'Gunn High School',
+    relationshipStatus: 'complicated',
+    interests: ['Climbing', 'Travel', 'Outdoors'],
+    yipScore: 2400,
+    zodiacSign: 'Capricorn',
+    isOnline: true,
+    lastActive: isoNow(),
+    streakCount: 14,
+    mutualFriends: 3,
+    distance: 3.0,
+  }),
+  makeUser({
+    id: 'user15',
+    name: 'Elliot Brooks',
+    displayName: 'Elliot',
+    username: 'elliotb',
+    email: 'elliot@example.com',
+    avatar:
+      'https://images.unsplash.com/photo-1502720705749-3c9b3b3b3b3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    bio: 'I cook. You rate. We both win.',
+    age: 25,
+    gender: 'other',
+    pronouns: 'they/them',
+    highSchool: 'Los Altos High',
+    relationshipStatus: 'single',
+    interests: ['Cooking', 'Playlists', 'Basketball'],
+    yipScore: 1980,
+    zodiacSign: 'Aries',
+    isOnline: false,
+    lastActive: new Date(Date.now() - 9000000).toISOString(),
+    streakCount: 5,
+    mutualFriends: 5,
+    distance: 4.9,
+  }),
+  makeUser({
+    id: 'user16',
+    name: 'Priya Desai',
+    displayName: 'Priya',
+    username: 'priyad',
+    email: 'priya@example.com',
+    avatar:
+      'https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    bio: 'Library dates > club nights. Also: matcha addict.',
+    age: 21,
+    gender: 'female',
+    pronouns: 'she/her',
+    highSchool: 'Woodside High',
+    relationshipStatus: 'single',
+    interests: ['Reading', 'Matcha', 'Journaling'],
+    yipScore: 1320,
+    zodiacSign: 'Virgo',
+    isOnline: true,
+    lastActive: isoNow(),
+    streakCount: 7,
+    mutualFriends: 2,
+    distance: 2.2,
+  }),
+  makeUser({
+    id: 'user17',
+    name: 'Noah Park',
+    displayName: 'Noah',
+    username: 'noahp',
+    email: 'noah@example.com',
+    avatar:
+      'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    bio: 'Skate, shoot photos, repeat.',
+    age: 20,
+    gender: 'male',
+    pronouns: 'he/him',
+    highSchool: 'Mountain View High',
+    relationshipStatus: 'single',
+    interests: ['Skateboarding', 'Photography', 'Streetwear'],
+    yipScore: 740,
+    zodiacSign: 'Gemini',
+    isOnline: false,
+    lastActive: new Date(Date.now() - 3600000 * 8).toISOString(),
+    streakCount: 2,
+    mutualFriends: 0,
+    distance: 1.9,
+  }),
+  makeUser({
+    id: 'user18',
+    name: 'Lena Fischer',
+    displayName: 'Lena',
+    username: 'lenaf',
+    email: 'lena@example.com',
+    avatar:
+      'https://images.unsplash.com/photo-1524502397800-2eeaad7c3fe5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    bio: 'Trying every bakery in town. Recommendations welcome.',
+    age: 24,
+    gender: 'female',
+    pronouns: 'she/her',
+    highSchool: 'Gunn High School',
+    relationshipStatus: 'taken',
+    interests: ['Baking', 'Travel', 'Yoga'],
+    yipScore: 2750,
+    zodiacSign: 'Pisces',
+    isOnline: true,
+    lastActive: isoNow(),
+    streakCount: 16,
+    mutualFriends: 6,
+    distance: 0.6,
+  }),
+  makeUser({
+    id: 'user19',
+    name: 'Omar Hassan',
+    displayName: 'Omar',
+    username: 'omarh',
+    email: 'omar@example.com',
+    avatar:
+      'https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    bio: 'Gym in the morning, chess at night.',
+    age: 23,
+    gender: 'male',
+    pronouns: 'he/him',
+    highSchool: 'Menlo-Atherton High',
+    relationshipStatus: 'single',
+    interests: ['Fitness', 'Chess', 'Podcasts'],
+    yipScore: 1890,
+    zodiacSign: 'Sagittarius',
+    isOnline: false,
+    lastActive: new Date(Date.now() - 3600000 * 5).toISOString(),
+    streakCount: 8,
+    mutualFriends: 3,
+    distance: 3.8,
+  }),
+  makeUser({
+    id: 'user20',
+    name: 'Mia Santos',
+    displayName: 'Mia',
+    username: 'mias',
+    email: 'mia@example.com',
+    avatar:
+      'https://images.unsplash.com/photo-1544005316-04ce7c095b4d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    bio: 'If there’s a karaoke mic, I’m taking it.',
+    age: 22,
+    gender: 'female',
+    pronouns: 'she/her',
+    highSchool: 'Los Altos High',
+    relationshipStatus: 'complicated',
+    interests: ['Karaoke', 'Dance', 'Concerts'],
+    yipScore: 2600,
+    zodiacSign: 'Libra',
+    isOnline: true,
+    lastActive: isoNow(),
+    streakCount: 13,
+    mutualFriends: 7,
+    distance: 1.4,
+  }),
 ];
 
-// Map user IDs to friend IDs for the mock data
-export const mockUserFriendMap = {
-  'friend1': 'user2', // Taylor Smith
-  'friend2': 'user3', // Jordan Lee
-  'friend3': 'user4', // Casey Brown
-  'friend4': 'user5', // Riley Garcia
-  'friend5': 'user6', // Morgan Wilson
-  'friend6': 'user7', // Avery Martinez
-  'friend7': 'user8', // Quinn Thompson
-  'friend8': 'user9', // Jamie Rodriguez
-  'friend9': 'user10', // Reese Campbell
-  'friend10': 'user1', // Alex Johnson
-  'other_user': 'user1', // Alex Johnson
+export const mockUserFriendMap: Record<string, string> = {
+  friend1: 'user2',
+  friend2: 'user3',
+  friend3: 'user4',
+  friend4: 'user5',
+  friend5: 'user6',
+  friend6: 'user7',
+  friend7: 'user8',
+  friend8: 'user9',
+  friend9: 'user10',
+  friend10: 'user1',
+  friend11: 'user11',
+  friend12: 'user12',
+  friend13: 'user13',
+  friend14: 'user14',
+  friend15: 'user15',
+  other_user: 'user1',
 };
 
-// Function to get a user by ID
 export const getUserById = (id: string): User | null => {
   if (!id) return null;
-  
-  // CRITICAL: Never return admin account
+
   if (id === 'admin_user' || id === 'admin15') {
     return null;
   }
-  
-  // Check if this is a friend ID that needs to be mapped to a user ID
-  const mappedId = mockUserFriendMap[id] || id;
-  
-  return mockUsers.find(user => user.id === mappedId) || null;
+
+  const mappedId = mockUserFriendMap[id] ?? id;
+
+  return mockUsers.find((user) => user.id === mappedId) ?? null;
 };
 
-// Export a function to get a random user (excluding admin)
 export const getRandomUser = (): User => {
-  const filteredUsers = mockUsers.filter(user => 
-    user.id !== 'admin_user' && 
-    user.username !== 'admin15' && 
-    user.email !== 'admin15'
+  const filteredUsers = mockUsers.filter(
+    (user) => user.id !== 'admin_user' && user.username !== 'admin15' && user.email !== 'admin15'
   );
   const randomIndex = Math.floor(Math.random() * filteredUsers.length);
   return filteredUsers[randomIndex];
