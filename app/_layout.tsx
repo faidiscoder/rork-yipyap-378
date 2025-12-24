@@ -74,10 +74,10 @@ export default function RootLayout() {
     return <BannedScreen />;
   }
 
-  // Determine if user is authenticated
-  const isAuthenticated = !!(currentUser && authToken);
+  // Dev mode: always allow app access; userStore pre-seeds a local test account.
+  const isAuthenticated = true;
 
-  console.log('🔐 Auth State:', { isAuthenticated, hasUser: !!currentUser, hasToken: !!authToken });
+  console.log('🔓 Auth bypass enabled:', { hasUser: !!currentUser, hasToken: !!authToken });
 
   return (
     <TRPCProvider>

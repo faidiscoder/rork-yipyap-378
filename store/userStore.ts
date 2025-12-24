@@ -3,7 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User, Report } from '@/types/user';
 import { trpcClient } from '@/lib/trpc';
-
+import { mockUsers } from '@/mocks/users';
 
 interface UserState {
   currentUser: User | null;
@@ -163,60 +163,101 @@ export const useUserStore = create<UserState>()(
       initializeApp: async () => {
         try {
           set({ isLoading: true, error: null });
-          
+
           console.log('🔄 Initializing app - checking for stored auth');
-          
+
           // Try to get stored auth token for persistence
           try {
             const storedToken = await AsyncStorage.getItem('authToken');
             const storedUser = await AsyncStorage.getItem('currentUser');
-            
+
             if (storedToken && storedUser) {
               console.log('📱 Found stored auth, restoring session');
               const user = JSON.parse(storedUser);
-              
+
               // Set token globally for TRPC
               (global as any).authToken = storedToken;
-              
+
               // Restore user session without backend verification
               // (since we're using Rork servers that don't have our user endpoints)
-              set({ 
+              set({
                 currentUser: createCompleteUser(user),
                 authToken: storedToken,
-                isInitialized: true, 
+                isInitialized: true,
                 isLoading: false,
-                isAdmin: user.username === 'admin15' && user.isAdmin === true
+                isAdmin: user.username === 'admin15' && user.isAdmin === true,
               });
-              
+
               console.log('✅ Session restored from storage');
               return;
             }
           } catch {
             console.log('🔄 No stored auth found or error reading storage');
           }
-          
-          // No stored auth, initialize as logged out
-          set({ 
-            isInitialized: true, 
+
+          // No stored auth -> pre-log into a local test account and seed mock users.
+          const testUser = mockUsers[0];
+          const mockToken = 'dev-mock-token';
+
+          console.log('🧪 No stored auth. Using local test account:', {
+            id: testUser?.id,
+            username: testUser?.username,
+          });
+
+          const completeTestUser = createCompleteUser({
+            ...testUser,
+            verified: testUser?.isVerified ?? false,
+            yipScore: testUser?.yipScore ?? 0,
+          });
+
+          // Store auth so refreshes stay logged in
+          try {
+            await AsyncStorage.setItem('authToken', mockToken);
+            await AsyncStorage.setItem('currentUser', JSON.stringify(completeTestUser));
+          } catch (error) {
+            console.error('Failed to persist mock auth:', error);
+          }
+
+          (global as any).authToken = mockToken;
+
+          const seededNearbyUsers = mockUsers.slice(1, 16).map((u) =>
+            createCompleteUser({
+              ...u,
+              verified: u?.isVerified ?? false,
+              yipScore: u?.yipScore ?? 0,
+            })
+          );
+
+          const seededQuickAddUsers = mockUsers.slice(16, 26).map((u) =>
+            createCompleteUser({
+              ...u,
+              verified: u?.isVerified ?? false,
+              yipScore: u?.yipScore ?? 0,
+            })
+          );
+
+          set({
+            isInitialized: true,
             isLoading: false,
-            currentUser: null,
-            authToken: null,
-            nearbyUsers: [],
-            quickAddUsers: [],
+            currentUser: completeTestUser,
+            authToken: mockToken,
+            nearbyUsers: seededNearbyUsers,
+            quickAddUsers: seededQuickAddUsers,
             parties: [],
             friends: [],
             outgoingRequests: [],
             incomingRequests: [],
-            userLocation: null
+            userLocation: null,
+            isAdmin: false,
           });
-          
-          console.log('✅ App initialized - ready for login');
+
+          console.log('✅ App initialized - mock session ready');
         } catch (error) {
           console.error('App initialization error:', error);
-          set({ 
-            isInitialized: true, 
-            isLoading: false, 
-            error: 'Failed to initialize app'
+          set({
+            isInitialized: true,
+            isLoading: false,
+            error: 'Failed to initialize app',
           });
         }
       },
@@ -329,37 +370,54 @@ export const useUserStore = create<UserState>()(
       fetchNearbyUsers: async (location, maxDistance) => {
         try {
           set({ isLoading: true });
-          
+
+          console.log('📍 fetchNearbyUsers called:', {
+            location,
+            maxDistance,
+          });
+
           const response = await trpcClient.users.getNearbyUsers.query({
             latitude: location.latitude,
             longitude: location.longitude,
-            maxDistance
+            maxDistance,
           });
-          
+
           if (response.success) {
-            const users = response.users?.map((user: any) => createCompleteUser({
-              ...user,
-              email: user.email || '',
-              relationshipStatus: user.relationshipStatus || 'single',
-              interests: user.interests || [],
-              zodiacSign: user.zodiacSign || '',
-              pronouns: user.pronouns || '',
-              createdAt: user.createdAt || new Date().toISOString(),
-              age: user.age || 18,
-            })) || [];
-            set({ 
+            const users =
+              response.users?.map((user: any) =>
+                createCompleteUser({
+                  ...user,
+                  email: user.email || '',
+                  relationshipStatus: user.relationshipStatus || 'single',
+                  interests: user.interests || [],
+                  zodiacSign: user.zodiacSign || '',
+                  pronouns: user.pronouns || '',
+                  createdAt: user.createdAt || new Date().toISOString(),
+                  age: user.age || 18,
+                })
+              ) || [];
+            set({
               nearbyUsers: users,
-              isLoading: false 
+              isLoading: false,
             });
-          } else {
-            throw new Error('Failed to fetch nearby users');
+            return;
           }
+
+          throw new Error('Failed to fetch nearby users');
         } catch (error) {
-          console.error('Error fetching nearby users:', error);
-          set({ 
-            nearbyUsers: [],
+          console.error('Error fetching nearby users (falling back to mocks):', error);
+
+          const fallbackUsers = mockUsers.slice(1, 16).map((u) =>
+            createCompleteUser({
+              ...u,
+              verified: u?.isVerified ?? false,
+              yipScore: u?.yipScore ?? 0,
+            })
+          );
+
+          set({
+            nearbyUsers: fallbackUsers,
             isLoading: false,
-            error: 'Failed to load nearby users'
           });
         }
       },
@@ -367,39 +425,53 @@ export const useUserStore = create<UserState>()(
       refreshQuickAdd: async () => {
         try {
           set({ isLoading: true });
-          
+
+          console.log('✨ refreshQuickAdd called');
+
           const response = await trpcClient.users.getQuickAdd.query({
-            limit: 20
+            limit: 20,
           });
-          
+
           if (response.success) {
-            const users = response.users?.map((user: any) => createCompleteUser({
-              ...user,
-              email: user.email || '',
-              relationshipStatus: user.relationshipStatus || 'single',
-              interests: user.interests || [],
-              zodiacSign: user.zodiacSign || '',
-              pronouns: user.pronouns || '',
-              createdAt: user.createdAt || new Date().toISOString(),
-              age: user.age || 18,
-            })) || [];
-            set({ 
+            const users =
+              response.users?.map((user: any) =>
+                createCompleteUser({
+                  ...user,
+                  email: user.email || '',
+                  relationshipStatus: user.relationshipStatus || 'single',
+                  interests: user.interests || [],
+                  zodiacSign: user.zodiacSign || '',
+                  pronouns: user.pronouns || '',
+                  createdAt: user.createdAt || new Date().toISOString(),
+                  age: user.age || 18,
+                })
+              ) || [];
+            set({
               quickAddUsers: users,
-              isLoading: false 
+              isLoading: false,
             });
-          } else {
-            throw new Error('Failed to fetch quick add users');
+            return;
           }
+
+          throw new Error('Failed to fetch quick add users');
         } catch (error) {
-          console.error('Error refreshing quick add:', error);
-          set({ 
-            quickAddUsers: [],
+          console.error('Error refreshing quick add (falling back to mocks):', error);
+
+          const fallbackUsers = mockUsers.slice(16, 26).map((u) =>
+            createCompleteUser({
+              ...u,
+              verified: u?.isVerified ?? false,
+              yipScore: u?.yipScore ?? 0,
+            })
+          );
+
+          set({
+            quickAddUsers: fallbackUsers,
             isLoading: false,
-            error: 'Failed to load suggestions'
           });
         }
       },
-      
+
       toggleGhostMode: () => {
         set(state => ({ isGhostModeEnabled: !state.isGhostModeEnabled }));
       },
