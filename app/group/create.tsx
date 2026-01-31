@@ -51,7 +51,7 @@ export default function CreateGroupScreen() {
       const newGroup = await createGroup(groupData);
       
       // Navigate directly to the group chat instead of showing alert
-      router.replace(`/chat/group_${newGroup.id}`);
+      router.replace({ pathname: '/chat/[id]', params: { id: `group_${String(newGroup.id)}` } });
     } catch (error: any) {
       Alert.alert('Error', error.message || 'Failed to create group');
       setIsLoading(false);

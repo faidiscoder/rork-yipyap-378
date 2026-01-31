@@ -333,11 +333,11 @@ export default function ChatScreen() {
     
     if (chat.type === 'party' && chat.id.startsWith('party_')) {
       const partyId = chat.id.replace('party_', '');
-      router.push(`/party/${partyId}`);
+      router.push({ pathname: '/party/[id]', params: { id: String(partyId) } });
     } else if (chat.isGroup) {
       setShowParticipants(true);
     } else if (otherParticipant) {
-      router.push(`/profile/${otherParticipant.id}`);
+      router.push({ pathname: '/profile/[id]', params: { id: String(otherParticipant.id) } });
     }
   };
 
@@ -1368,7 +1368,7 @@ export default function ChatScreen() {
           </Text>
           <TouchableOpacity 
             style={styles.backToChatsButton}
-            onPress={() => router.push('/chat')}
+            onPress={() => router.push('/(tabs)/chat')}
           >
             <Text style={styles.backToChatsText}>Back to Chats</Text>
           </TouchableOpacity>

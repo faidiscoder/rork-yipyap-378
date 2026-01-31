@@ -345,7 +345,13 @@ export default function ProfileScreen() {
               style={[styles.pill, { 
                 backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
               }]}
-              onPress={() => router.push(`/school/${currentSchoolId || 'search'}`)}
+              onPress={() => {
+                if (currentSchoolId) {
+                  router.push({ pathname: '/school/[id]', params: { id: String(currentSchoolId) } });
+                  return;
+                }
+                router.push('/school/search');
+              }}
             >
               <MapPin size={16} color={colors.success} />
               <Text style={[styles.pillText, { color: isDark ? colors.text : '#333333' }]}>{currentUser.highSchool}</Text>
