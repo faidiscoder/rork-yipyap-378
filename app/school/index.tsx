@@ -6,7 +6,7 @@ import { Search, MapPin, School as SchoolIcon, Users, BookOpen, RefreshCw, Gradu
 import { useThemeColors } from '@/hooks/useThemeColors';
 import { useUserStore } from '@/store/userStore';
 import { useLocation } from '@/hooks/useLocation';
-import { School } from '@/types/user';
+import type { School } from '@/mocks/schools';
 import { LinearGradient } from 'expo-linear-gradient';
 import { mockSchools } from '@/mocks/schools';
 
@@ -47,7 +47,7 @@ export default function SchoolsScreen() {
       let schoolsWithDistance = schoolsData;
       if (location && validateLocation(location)) {
         schoolsWithDistance = schoolsData.map(school => {
-          if (school.location) {
+          if (school.location?.latitude != null && school.location?.longitude != null) {
             const distance = calculateDistance(
               location.latitude,
               location.longitude,
@@ -87,11 +87,11 @@ export default function SchoolsScreen() {
   };
 
   const handleSchoolPress = (school: School) => {
-    router.push(`/school/${school.id}`);
+    router.push({ pathname: '/school/[id]' as any, params: { id: school.id } as any });
   };
 
   const navigateToSearch = () => {
-    router.push('/school/search');
+    router.push({ pathname: '/school/search' as any });
   };
   
   const onRefresh = React.useCallback(async () => {

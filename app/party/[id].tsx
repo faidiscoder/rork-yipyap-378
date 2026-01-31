@@ -40,7 +40,7 @@ export default function PartyDetailScreen() {
     try {
       setIsChatLoading(true);
       // Filter out current user from participants
-      const otherParticipants = party.participants.filter(p => p !== currentUser?.id && p !== 'current_user');
+      const otherParticipants = party.participants.filter((p: string) => p !== currentUser?.id && p !== 'current_user');
       await createPartyChat(party.id, party.name, otherParticipants);
     } catch (error) {
       console.error('Failed to create party chat:', error);
@@ -108,7 +108,7 @@ export default function PartyDetailScreen() {
                     {
                       text: 'OK',
                       onPress: () => {
-                        router.replace('/(tabs)/chat');
+                        router.replace({ pathname: '/(tabs)/chat' as any });
                       }
                     }
                   ]);
@@ -117,7 +117,7 @@ export default function PartyDetailScreen() {
                     {
                       text: 'OK',
                       onPress: () => {
-                        router.replace('/(tabs)/chat');
+                        router.replace({ pathname: '/(tabs)/chat' as any });
                       }
                     }
                   ]);
@@ -162,10 +162,10 @@ export default function PartyDetailScreen() {
     
     if (!partyChat) {
       createPartyChatIfNeeded().then(() => {
-        router.push(`/chat/${chatId}`);
+        router.push({ pathname: '/chat/[id]' as any, params: { id: chatId } as any });
       });
     } else {
-      router.push(`/chat/${chatId}`);
+      router.push({ pathname: '/chat/[id]' as any, params: { id: chatId } as any });
     }
   };
 

@@ -93,27 +93,27 @@ export default function ChatScreen() {
   }, [searchQuery, chats, currentUser]);
   
   const handleChatPress = (chatId: string) => {
-    router.push(`/chat/${chatId}`);
+    router.push({ pathname: '/chat/[id]' as any, params: { id: chatId } as any });
   };
 
   const handleChatDoubleTap = (chatId: string) => {
-    router.push('/camera-tab?returnTo=chat');
+    router.push({ pathname: '/camera-tab' as any, params: { returnTo: 'chat' } as any });
   };
   
   const handleNewChat = () => {
-    router.push('/group/create');
+    router.push({ pathname: '/group/create' as any });
   };
 
   const handleCreateParty = () => {
-    router.push('/party/create');
+    router.push({ pathname: '/party/create' as any });
   };
 
   const handleSchoolSearch = () => {
-    router.push('/school/search');
+    router.push({ pathname: '/school/search' as any });
   };
 
   const handlePartyPress = (partyId: string) => {
-    router.push(`/party/${partyId}`);
+    router.push({ pathname: '/party/[id]' as any, params: { id: partyId } as any });
   };
 
   const handleAcceptPartyInvite = async (partyId: string) => {
@@ -271,7 +271,7 @@ export default function ChatScreen() {
           </Text>
           <TouchableOpacity 
             style={styles.loginButton}
-            onPress={() => router.push('/auth/login')}
+            onPress={() => router.push({ pathname: '/auth/login' as any })}
           >
             <Text style={styles.loginButtonText}>Log In</Text>
           </TouchableOpacity>

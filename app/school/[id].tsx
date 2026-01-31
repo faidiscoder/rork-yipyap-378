@@ -47,7 +47,12 @@ export default function SchoolDetailScreen() {
   let calculatedDistance: number | undefined;
   let isWithinRange = false;
 
-  if (location && school.location && validateLocation(location)) {
+  if (
+    location &&
+    school.location?.latitude != null &&
+    school.location?.longitude != null &&
+    validateLocation(location)
+  ) {
     calculatedDistance = calculateDistance(
       location.latitude,
       location.longitude,
@@ -262,7 +267,7 @@ export default function SchoolDetailScreen() {
             <View style={styles.schoolInfo}>
               <Text style={styles.schoolName}>{school.name}</Text>
               <Text style={styles.schoolLocation}>
-                {school.city}, {school.state}
+                {school.city ?? school.location.city}, {school.state ?? school.location.state}
               </Text>
               
               <View style={styles.typeBadge}>
@@ -277,7 +282,7 @@ export default function SchoolDetailScreen() {
             <View style={styles.statItem}>
               <Users size={16} color="rgba(255,255,255,0.9)" />
               <Text style={styles.statText}>
-                {school.students?.length || 0} Students
+                {school.students?.length ?? school.studentCount ?? 0} Students
               </Text>
             </View>
             
@@ -393,7 +398,7 @@ export default function SchoolDetailScreen() {
               <View style={[styles.infoCard, { backgroundColor: isDark ? '#2A2A2A' : '#FFFFFF' }]}>
                 <Text style={[styles.infoLabel, { color: isDark ? '#BBBBBB' : '#708090' }]}>School Colors</Text>
                 <View style={styles.colorsContainer}>
-                  {school.colors.map((color, index) => (
+                  {school.colors.map((color: string, index: number) => (
                     <View 
                       key={index} 
                       style={[styles.colorCircle, { backgroundColor: color }]}
@@ -414,9 +419,9 @@ export default function SchoolDetailScreen() {
             
             <View style={[styles.infoCard, { backgroundColor: isDark ? '#2A2A2A' : '#FFFFFF' }]}>
               <Text style={[styles.infoLabel, { color: isDark ? '#BBBBBB' : '#708090' }]}>Location</Text>
-              <Text style={[styles.infoValue, { color: isDark ? '#FFFFFF' : '#2F4F4F' }]}>{school.address}</Text>
+              <Text style={[styles.infoValue, { color: isDark ? '#FFFFFF' : '#2F4F4F' }]}>{school.address ?? `${school.location.city}, ${school.location.state}` }</Text>
               <Text style={[styles.infoSubvalue, { color: isDark ? '#BBBBBB' : '#708090' }]}>
-                {school.city}, {school.state}
+                {school.city ?? school.location.city}, {school.state ?? school.location.state}
               </Text>
               {calculatedDistance !== undefined && (
                 <Text style={[styles.infoSubvalue, { color: isDark ? '#BBBBBB' : '#708090' }]}>

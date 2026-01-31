@@ -71,7 +71,7 @@
     "use-debounce": "^10.0.4",
     "zod": "^3.25.49",
     "zustand": "^5.0.5",
-    "@rork-ai/toolkit-sdk": "0.2.51"
+    "@rork-ai/toolkit-sdk": "latest"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

@@ -277,7 +277,12 @@ export default function AdminScreen() {
 
           <TouchableOpacity
             style={[styles.actionButton, { backgroundColor: isDark ? colors.border : '#E0E0E0' }]}
-            onPress={() => router.push(`/profile/${report.reportedUserId}`)}
+            onPress={() =>
+              router.push({
+                pathname: '/profile/[id]' as any,
+                params: { id: String(report.reportedUserId) } as any,
+              })
+            }
           >
             <Eye size={16} color={isDark ? colors.text : '#333333'} />
             <Text style={[styles.actionButtonText, { color: isDark ? colors.text : '#333333' }]}>

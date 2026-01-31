@@ -92,7 +92,7 @@ export default function CameraScreen() {
             </Text>
             <TouchableOpacity
               style={styles.permissionButton}
-              onPress={() => router.push('/auth/login')}
+              onPress={() => router.push({ pathname: '/auth/login' as any })}
             >
               <Text style={styles.permissionButtonText}>Go to Login</Text>
             </TouchableOpacity>

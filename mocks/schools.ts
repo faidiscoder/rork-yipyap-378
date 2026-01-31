@@ -6,8 +6,19 @@ export interface School {
     city: string;
     state: string;
     country: string;
+    latitude?: number;
+    longitude?: number;
   };
+  city?: string;
+  state?: string;
+  address?: string;
+  website?: string;
+  colors?: string[];
+  mascot?: string;
+  yearFounded?: number;
+  students?: string[];
   studentCount?: number;
+  distance?: number;
   isVerified: boolean;
   logo?: string;
 }

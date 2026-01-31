@@ -69,7 +69,7 @@ export default function PoolScreen() {
   };
 
   const handleUserPress = (user: User) => {
-    router.push(`/profile/${user.id}`);
+    router.push({ pathname: '/profile/[id]' as any, params: { id: user.id } as any });
   };
 
   const handleRefresh = async () => {
